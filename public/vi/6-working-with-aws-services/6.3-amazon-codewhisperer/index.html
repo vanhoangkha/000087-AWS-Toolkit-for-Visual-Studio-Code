@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="vi" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.122.0">
+    <meta name="description" content="">
+<meta name="author" content="journeyoftheaverageguy@gmail.com">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Amazon CodeWhisperer :: Bắt đầu với Amazon VPC và AWS VPN Site to Site</title>
+
+    
+    <link href="/css/nucleus.css?1715218604" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1715218604" rel="stylesheet">
+    <link href="/css/hybrid.css?1715218604" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1715218604" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1715218604" rel="stylesheet">
+    <link href="/css/auto-complete.css?1715218604" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1715218604" rel="stylesheet">
+    <link href="/css/theme.css?1715218604" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1715218604" rel="stylesheet">
+    
+    <link href="/css/theme-workshop.css?1715218604" rel="stylesheet">
+    
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1715218604"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/vi/6-working-with-aws-services/6.3-amazon-codewhisperer/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg>
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1715218604"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1715218604"></script>
+<script type="text/javascript">
+    
+        var baseurl = "\/vi";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1715218604"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/1-introduce/" title="Giới thiệu" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/1-introduce/">
+           <b> 1. </b> Giới thiệu
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/2-install/" title="AWS Toolkit Cho Visual Studio Code" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/2-install/">
+          <b> 2. </b>AWS Toolkit Cho Visual Studio Code
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/3-connecting-to-aws/" title="Kết nối tài khoản AWS" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/3-connecting-to-aws/">
+          <b> 3. </b>Kết nối tài khoản AWS
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/4-change-aws-regions/" title="Thay đổi AWS Region" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/4-change-aws-regions/">
+          <b> 4. </b>Thay đổi AWS Region
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/" title="Xác thực" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/">
+          <b> 5. </b>Xác thực
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/5.1-aws-iam-identity-center/" title="IAM Identity Center" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/5.1-aws-iam-identity-center/">
+          <b>5.1</b>IAM Identity Center
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/5.2-aws-iam-credentials/" title="AWS IAM credentials" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/5.2-aws-iam-credentials/">
+          <b>5.2</b>AWS IAM credentials
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/5.3-aws-builder-id-for-developers/" title="Tạo AWS Builder ID" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/5.3-aws-builder-id-for-developers/">
+          <b> 5.3 </b>Tạo AWS Builder ID
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/6-working-with-aws-services/" title="Tương tác với các dịch vụ" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/vi/6-working-with-aws-services/">
+          <b>6.</b>Tương tác với các dịch vụ
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/6-working-with-aws-services/6.1-aws-explorer/" title="AWS Explorer" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/6-working-with-aws-services/6.1-aws-explorer/">
+          <b>6.1</b>AWS Explorer
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/6-working-with-aws-services/6.2-amazon-q/" title="Amazon Q" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/6-working-with-aws-services/6.2-amazon-q/">
+          <b> 6.2 </b>Amazon Q
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/6-working-with-aws-services/6.3-amazon-codewhisperer/" title="Amazon CodeWhisperer" class="dd-item 
+        
+        active
+        
+        ">
+      <a href="/vi/6-working-with-aws-services/6.3-amazon-codewhisperer/">
+           <b> 6.3 </b> Amazon CodeWhisperer
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="http://awsstudygroup.com"><i class='fab fa-aws'></i> AWS Study Group - Blog</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="https://www.facebook.com/groups/awsstudygroupfcj"><i class='fab fa-facebook'></i> AWS Study Group - Nhóm FB</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="/6-working-with-aws-services/6.3-amazon-codewhisperer/">English</option>
+                    
+                  
+              
+                  
+              
+          
+              
+              
+                  
+              
+                  
+                    
+                    
+                      <option id="vi" value="/vi/6-working-with-aws-services/6.3-amazon-codewhisperer/" selected>Tiếng Việt</option>
+                    
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <left>
+    
+     <b> Workshop</b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=13183556&style=0038&nbdigits=9&type=page&initCount=0" title="Migrate" Alt="web counter"   border="0" /></a>  <br>
+     <b> <a href="https://cloudjourney.awsstudygroup.com/">Cloud Journey</a></b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830807&style=0038&nbdigits=9&type=page&initCount=0" title="Total CLoud Journey" Alt="web counter"   border="0"   />
+     
+</left>
+<left>
+    <br>
+    <br>
+        <b> Last Updated </b> <br>
+        <i><font color=orange>09-05-2024</font></i>
+    </left>
+    <left>
+        <br>
+        <br>
+            <b> Team </b> <br>
+            <i> <a href="https://www.linkedin.com/in/jotaguy"  style="color:orange">Gia Hưng </a> <br>
+            <i> <a href="https://www.linkedin.com/in/vanhoangkha/"  style="color:orange">Hoàng Kha </a> <br>
+        </left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/vi/'>AWS Toolkit for VS Code: Amazon Q & CodeWhisperer</a> > <a href='/vi/6-working-with-aws-services/'>Tương tác với các dịch vụ</a> > Amazon CodeWhisperer
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Amazon CodeWhisperer
+            </h1>
+          
+
+        
+
+
+
+	<h4 id="sử-dụng-codewhisperer-để-viết-mã-nhanh-hơn">Sử dụng CodeWhisperer để viết mã nhanh hơn</h4>
+<p>CodeWhisperer có thể được sử dụng như một công cụ tự động hoàn chỉnh siêu mạnh mẽ, giúp giảm đáng kể việc gõ phím khi viết từng dòng hoặc khối mã. Để sử dụng CodeWhisperer theo cách này, chỉ cần viết mã như bạn đã làm trước đây. CodeWhisperer sẽ đưa ra các gợi ý tự động khi bạn gõ. Chấp nhận các gợi ý khi chúng hữu ích và bỏ qua chúng khi chúng không phù hợp. Theo kinh nghiệm của tôi, việc sử dụng CodeWhisperer theo cách này một mình đã giảm việc gõ phím của tôi đi 50% hoặc hơn.</p>
+<h4 id="tạo-hàm-tự-động">Tạo Hàm Tự Động</h4>
+<p>Trong lập trình, việc tạo ra các hàm có thể tự động sinh ra nội dung từ các chữ ký là một phần quan trọng của quá trình phát triển phần mềm. Các lập trình viên tài năng thường sử dụng các tên rõ ràng, mô tả cho các hàm và tham số của họ. Nếu bạn tuân thủ thực hành này trong lập trình của riêng bạn, CodeWhisperer sẽ có đủ ngữ cảnh để triển khai nhiều hàm cho bạn.</p>
+<p>Khi bạn nhập chữ ký hàm dưới đây, CodeWhisperer sẽ sinh ra nội dung hàm cho bạn.</p>
+<p><strong>Đầu vào người dùng (JavaScript):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">standardDeviation</span>(<span style="color:#a6e22e">numbers</span>)
+</span></span></code></pre></div><p><strong>Kết quả:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">standardDeviation</span>(<span style="color:#a6e22e">numbers</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">mean</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">numbers</span>.<span style="color:#a6e22e">reduce</span>((<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) =&gt; <span style="color:#a6e22e">a</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">b</span>) <span style="color:#f92672">/</span> <span style="color:#a6e22e">numbers</span>.<span style="color:#a6e22e">length</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">variance</span> <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">numbers</span>.<span style="color:#a6e22e">reduce</span>((<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) =&gt; <span style="color:#a6e22e">a</span> <span style="color:#f92672">+</span> Math.<span style="color:#a6e22e">pow</span>(<span style="color:#a6e22e">b</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">mean</span>, <span style="color:#ae81ff">2</span>)) <span style="color:#f92672">/</span> <span style="color:#a6e22e">numbers</span>.<span style="color:#a6e22e">length</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> Math.<span style="color:#a6e22e">sqrt</span>(<span style="color:#a6e22e">variance</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="tạo-hàm-từ-chú-thích">Tạo Hàm từ Chú Thích</h4>
+<p>Đôi khi, một chữ ký hàm tốt một mình không đủ để truyền đạt hành vi mong muốn của một hàm. Trong những trường hợp đó, bạn có thể sử dụng một chú thích mã lệnh chi tiết như một gợi ý cho CodeWhisperer. Tôi khuyên bạn nên sử dụng ký hiệu chú thích tài liệu của ngôn ngữ của bạn khi sử dụng kỹ thuật này.</p>
+<p><strong>Đầu vào người dùng (JavaScript):</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * Given a list that contains some numbers and strings, format them into a string
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * in which the numbers are prepended with &#34;#&#34; and the strings are wrapped in
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * double quotes.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> */</span>
+</span></span></code></pre></div><p><strong>Kết quả:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * Given a list that contains some numbers and strings, format them into a string
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * in which the numbers are prepended with &#34;#&#34; and the strings are wrapped in
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * double quotes.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">formatList</span>(<span style="color:#a6e22e">list</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">list</span>
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">item</span>) =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">item</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;number&#34;</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">`#</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">item</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>;
+</span></span><span style="display:flex;"><span>      } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">`&#34;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">item</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;`</span>;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">join</span>(<span style="color:#e6db74">&#34;, &#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Đó là cách bạn có thể sử dụng CodeWhisperer để tạo ra các hàm một cách tự động hoặc từ chú thích mô tả trong mã của mình.</p>
+<hr>
+<h4 id="tạo-các-lớp">Tạo các lớp</h4>
+<p>Bạn có thể tạo ra các lớp hoàn chỉnh hoặc một phần từ một comment duy nhất trong mã. Comment này nên mô tả các thuộc tính chính và hành vi của lớp. Thường chỉ cần những mô tả đơn giản.</p>
+<p>Đầu vào người dùng (TypeScript):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * Một thư mục có tên, các con, và một thư mục cha tùy chọn. Một con không thể được thêm
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * hai lần.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> */</span>
+</span></span></code></pre></div><p>Kết quả:</p>
+<p>Sau khi viết đoạn comment trên, CodeWhisperer cung cấp nhiều gợi ý, bao gồm cài đặt sau đây, kèm theo comment tài liệu cho mỗi phương thức!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * Một thư mục có tên, các con, và một thư mục cha tùy chọn. Một con không thể được thêm
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * hai lần.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Folder</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">children</span>: <span style="color:#66d9ef">Folder</span>[];
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">parent?</span>: <span style="color:#66d9ef">Folder</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">constructor</span>(<span style="color:#a6e22e">name</span>: <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">parent?</span>: <span style="color:#66d9ef">Folder</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">name</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">children</span> <span style="color:#f92672">=</span> [];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">parent</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">parent</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Thêm một con vào thư mục.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @param child Con cần thêm.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @returns True nếu con đã được thêm, false nếu con đã có trong danh sách.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">addChild</span>(<span style="color:#a6e22e">child</span>: <span style="color:#66d9ef">Folder</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">boolean</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">children</span>.<span style="color:#a6e22e">includes</span>(<span style="color:#a6e22e">child</span>)) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">children</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">child</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">child</span>.<span style="color:#a6e22e">parent</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * Xóa một con khỏi thư mục.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @param child Con cần xóa.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   * @returns True nếu con đã được xóa, false nếu không có trong danh sách.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">removeChild</span>(<span style="color:#a6e22e">child</span>: <span style="color:#66d9ef">Folder</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">boolean</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">index</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">children</span>.<span style="color:#a6e22e">indexOf</span>(<span style="color:#a6e22e">child</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">index</span> <span style="color:#f92672">===</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">children</span>.<span style="color:#a6e22e">splice</span>(<span style="color:#a6e22e">index</span>, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">child</span>.<span style="color:#a6e22e">parent</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">undefined</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Bạn có thể thấy rằng, dựa trên đoạn comment, mã cài đặt được tạo ra, bao gồm cả các comment tài liệu cho mỗi phương thức.</p>
+<hr>
+<h4 id="triển-khai-thuật-toán-với-codewhisperer">Triển khai thuật toán với CodeWhisperer</h4>
+<p>CodeWhisperer cho phép bạn triển khai các thuật toán nổi tiếng một cách dễ dàng. Chỉ cần cho biết thuật toán nào bạn muốn áp dụng cho một vấn đề lập trình cụ thể, và nó sẽ thực hiện theo yêu cầu.</p>
+<h4 id="đầu-vào-của-người-dùng-javascript">Đầu vào của người dùng (JavaScript):</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">actors</span> <span style="color:#f92672">=</span> [ ... ];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Sắp xếp các diễn viên theo tuổi bằng thuật toán merge sort.
+</span></span></span></code></pre></div><h4 id="kết-quả">Kết quả:</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">actors</span> <span style="color:#f92672">=</span> [ ... ];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Sắp xếp các diễn viên theo tuổi bằng thuật toán merge sort.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">mergeSort</span>(<span style="color:#a6e22e">arr</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">arr</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">arr</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">middle</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">floor</span>(<span style="color:#a6e22e">arr</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">left</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">arr</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">middle</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">right</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">arr</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#a6e22e">middle</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">merge</span>(<span style="color:#a6e22e">mergeSort</span>(<span style="color:#a6e22e">left</span>), <span style="color:#a6e22e">mergeSort</span>(<span style="color:#a6e22e">right</span>));
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">merge</span>(<span style="color:#a6e22e">left</span>, <span style="color:#a6e22e">right</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> [];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">left</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">right</span>.<span style="color:#a6e22e">length</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">left</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">age</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">right</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">age</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">left</span>.<span style="color:#a6e22e">shift</span>());
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">right</span>.<span style="color:#a6e22e">shift</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">left</span>.<span style="color:#a6e22e">length</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">left</span>.<span style="color:#a6e22e">shift</span>());
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">right</span>.<span style="color:#a6e22e">length</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">right</span>.<span style="color:#a6e22e">shift</span>());
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">mergeSort</span>(<span style="color:#a6e22e">actors</span>));
+</span></span></code></pre></div><p>Cảm ơn bạn đã sử dụng CodeWhisperer để triển khai thuật toán này!</p>
+<hr>
+<h4 id="tăng-cường-viết-các-unit-test">Tăng cường viết các unit test</h4>
+<p>CodeWhisperer giúp tăng tốc quá trình triển khai các unit test. Không chỉ có khả năng triển khai logic cho hầu hết các unit test mà tôi yêu cầu, mà nó thường đề xuất các test cho các trường hợp biên mà tôi thậm chí chưa nghĩ đến.</p>
+<p>Khi tôi muốn CodeWhisperer triển khai một unit test, tôi bắt đầu bằng việc khai báo điều kiện tôi đang kiểm tra và kết quả dự kiến như trong ví dụ sau.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">describe</span>(<span style="color:#e6db74">&#34;Folder.addChild()&#34;</span>, () =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">it</span>(<span style="color:#e6db74">&#34;when adding an existing folder should not add duplicate&#34;</span>, () =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">folder</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Folder</span>(<span style="color:#e6db74">&#34;root&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">child</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Folder</span>(<span style="color:#e6db74">&#34;child&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">folder</span>.<span style="color:#a6e22e">addChild</span>(<span style="color:#a6e22e">child</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">folder</span>.<span style="color:#a6e22e">addChild</span>(<span style="color:#a6e22e">child</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">expect</span>(<span style="color:#a6e22e">folder</span>.<span style="color:#a6e22e">children</span>.<span style="color:#a6e22e">length</span>).<span style="color:#a6e22e">toBe</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>Sau khi bạn đã viết một hoặc hai test, CodeWhisperer có khả năng đề xuất thêm các test mà không cần yêu cầu cụ thể.</p>
+<p><strong>Mẹo:</strong> Bạn sẽ nhận thấy rằng mô tả test của tôi bao gồm 1) hàm tôi đang kiểm tra, 2) điều kiện tôi đang kiểm tra, và 3) kết quả tôi mong đợi. Tuân theo mẫu ba phần này là một cách tuyệt vời để đảm bảo CodeWhisperer có ngữ cảnh cần thiết để triển khai logic test chất lượng cao.</p>
+<hr>
+<h4 id="tạo-dữ-liệu-mẫu-với-code-whisper">Tạo dữ liệu mẫu với Code Whisper</h4>
+<p>Một trong những phát hiện thú vị mà tôi đã trải qua là Code Whisperer có thể tạo ra dữ liệu giả - hoặc thực sự là bất kỳ mã nào có mẫu lặp lại. Ví dụ, cho danh sách dưới đây, tôi chỉ nhập đối tượng &ldquo;user&rdquo; đầu tiên làm ví dụ, và Code Whisperer đã tiếp tục mẫu một cách hữu ích.</p>
+<h4 id="nhập-người-dùng-javascript">Nhập người dùng (JavaScript):</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fakeUsers</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;User 1&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user1&#34;</span> },
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">JavaScript</span>
+</span></span></code></pre></div><h4 id="kết-quả-1">Kết quả:</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fakeUsers</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;User 1&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user1&#34;</span> },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;User 2&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user2&#34;</span> },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;User 3&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user3&#34;</span> },  
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;User 4&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user4&#34;</span> },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;User 5&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user5&#34;</span> },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;User 6&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user6&#34;</span> }
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">JavaScript</span>
+</span></span></code></pre></div><p>Nó còn hoạt động để tạo ra các giá trị ngẫu nhiên nhưng có thể tin được như các tên được thấy dưới đây.</p>
+<h4 id="nhập-người-dùng-javascript-1">Nhập người dùng (JavaScript):</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fakeUsers</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Sally&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user1&#34;</span> },
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">JavaScript</span>
+</span></span></code></pre></div><h4 id="kết-quả-2">Kết quả:</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fakeUsers</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Sally&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user1&#34;</span> },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Bob&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user2&#34;</span> },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Joe&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user3&#34;</span> },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Jane&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user4&#34;</span> },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Jill&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user5&#34;</span> },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Jack&#34;</span>, <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;user6&#34;</span> }
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><hr>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/vi/6-working-with-aws-services/6.2-amazon-q/" title="Amazon Q"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/vi/6-working-with-aws-services/6.1-aws-explorer/" title="AWS Explorer" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1715218604"></script>
+    <script src="/js/perfect-scrollbar.min.js?1715218604"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1715218604"></script>
+    <script src="/js/jquery.sticky.js?1715218604"></script>
+    <script src="/js/featherlight.min.js?1715218604"></script>
+    <script src="/js/highlight.pack.js?1715218604"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1715218604"></script>
+    <script src="/js/learn.js?1715218604"></script>
+    <script src="/js/hugo-learn.js?1715218604"></script>
+
+    <link href="/mermaid/mermaid.css?1715218604" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1715218604"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-158079754-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>

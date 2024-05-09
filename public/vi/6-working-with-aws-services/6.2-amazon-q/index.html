@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="vi" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.122.0">
+    <meta name="description" content="">
+<meta name="author" content="journeyoftheaverageguy@gmail.com">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Amazon Q :: Bắt đầu với Amazon VPC và AWS VPN Site to Site</title>
+
+    
+    <link href="/css/nucleus.css?1715218604" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1715218604" rel="stylesheet">
+    <link href="/css/hybrid.css?1715218604" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1715218604" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1715218604" rel="stylesheet">
+    <link href="/css/auto-complete.css?1715218604" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1715218604" rel="stylesheet">
+    <link href="/css/theme.css?1715218604" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1715218604" rel="stylesheet">
+    
+    <link href="/css/theme-workshop.css?1715218604" rel="stylesheet">
+    
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1715218604"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/vi/6-working-with-aws-services/6.2-amazon-q/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg>
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1715218604"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1715218604"></script>
+<script type="text/javascript">
+    
+        var baseurl = "\/vi";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1715218604"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/1-introduce/" title="Giới thiệu" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/1-introduce/">
+           <b> 1. </b> Giới thiệu
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/2-install/" title="AWS Toolkit Cho Visual Studio Code" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/2-install/">
+          <b> 2. </b>AWS Toolkit Cho Visual Studio Code
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/3-connecting-to-aws/" title="Kết nối tài khoản AWS" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/3-connecting-to-aws/">
+          <b> 3. </b>Kết nối tài khoản AWS
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/4-change-aws-regions/" title="Thay đổi AWS Region" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/4-change-aws-regions/">
+          <b> 4. </b>Thay đổi AWS Region
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/" title="Xác thực" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/">
+          <b> 5. </b>Xác thực
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/5.1-aws-iam-identity-center/" title="IAM Identity Center" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/5.1-aws-iam-identity-center/">
+          <b>5.1</b>IAM Identity Center
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/5.2-aws-iam-credentials/" title="AWS IAM credentials" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/5.2-aws-iam-credentials/">
+          <b>5.2</b>AWS IAM credentials
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/5.3-aws-builder-id-for-developers/" title="Tạo AWS Builder ID" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/5-authentication-and-access-for-the-aws-toolkit-for-visual-studio-code/5.3-aws-builder-id-for-developers/">
+          <b> 5.3 </b>Tạo AWS Builder ID
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/6-working-with-aws-services/" title="Tương tác với các dịch vụ" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/vi/6-working-with-aws-services/">
+          <b>6.</b>Tương tác với các dịch vụ
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/6-working-with-aws-services/6.1-aws-explorer/" title="AWS Explorer" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/6-working-with-aws-services/6.1-aws-explorer/">
+          <b>6.1</b>AWS Explorer
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/6-working-with-aws-services/6.2-amazon-q/" title="Amazon Q" class="dd-item 
+        
+        active
+        
+        ">
+      <a href="/vi/6-working-with-aws-services/6.2-amazon-q/">
+          <b> 6.2 </b>Amazon Q
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/6-working-with-aws-services/6.3-amazon-codewhisperer/" title="Amazon CodeWhisperer" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/6-working-with-aws-services/6.3-amazon-codewhisperer/">
+           <b> 6.3 </b> Amazon CodeWhisperer
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="http://awsstudygroup.com"><i class='fab fa-aws'></i> AWS Study Group - Blog</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="https://www.facebook.com/groups/awsstudygroupfcj"><i class='fab fa-facebook'></i> AWS Study Group - Nhóm FB</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="/6-working-with-aws-services/6.2-amazon-q/">English</option>
+                    
+                  
+              
+                  
+              
+          
+              
+              
+                  
+              
+                  
+                    
+                    
+                      <option id="vi" value="/vi/6-working-with-aws-services/6.2-amazon-q/" selected>Tiếng Việt</option>
+                    
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <left>
+    
+     <b> Workshop</b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=13183556&style=0038&nbdigits=9&type=page&initCount=0" title="Migrate" Alt="web counter"   border="0" /></a>  <br>
+     <b> <a href="https://cloudjourney.awsstudygroup.com/">Cloud Journey</a></b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830807&style=0038&nbdigits=9&type=page&initCount=0" title="Total CLoud Journey" Alt="web counter"   border="0"   />
+     
+</left>
+<left>
+    <br>
+    <br>
+        <b> Last Updated </b> <br>
+        <i><font color=orange>09-05-2024</font></i>
+    </left>
+    <left>
+        <br>
+        <br>
+            <b> Team </b> <br>
+            <i> <a href="https://www.linkedin.com/in/jotaguy"  style="color:orange">Gia Hưng </a> <br>
+            <i> <a href="https://www.linkedin.com/in/vanhoangkha/"  style="color:orange">Hoàng Kha </a> <br>
+        </left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/vi/'>AWS Toolkit for VS Code: Amazon Q & CodeWhisperer</a> > <a href='/vi/6-working-with-aws-services/'>Tương tác với các dịch vụ</a> > Amazon Q
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Amazon Q
+            </h1>
+          
+
+        
+
+
+
+	<h4 id="làm-việc-với-amazon-q-từ-toolkit">Làm việc với Amazon Q từ Toolkit</h4>
+<p>Amazon Q là một toolkit trò chuyện ngôn ngữ tự nhiên dựa trên trí tuệ nhân tạo có khả năng đề xuất mã cho các tập tin khác nhau, tạo PRs để được phê duyệt theo nhóm và triển khai chúng trong các dự án của bạn. Để biết thông tin chi tiết về dịch vụ Amazon Q, xem Hướng dẫn người dùng Amazon Q.</p>
+<h4 id="yêu-cầu-tiên-quyết">Yêu cầu tiên quyết</h4>
+<p>Để bắt đầu làm việc với Amazon Q, xác thực và kết nối với AWS bằng cách sử dụng ID AWS Builder hoặc thông tin đăng nhập IAM AWS của bạn. Xem các kế hoạch và giá cả chi tiết cho Amazon Q tại Hướng dẫn giá của Amazon Q. Để biết thông tin chi tiết về việc kết nối tài khoản AWS của bạn với Toolkit, xem phần Xác thực cho Amazon Q + CodeWhisperer trong Hướng dẫn người dùng này.</p>
+<h4 id="trò-chuyện-với-amazon-q">Trò chuyện với Amazon Q</h4>
+<p>Bắt đầu một cuộc trò chuyện với Amazon Q bằng cách đặt câu hỏi trong Chat. Amazon Q có thể thảo luận về nhiều chủ đề bao gồm AWS, phát triển phần mềm, ngôn ngữ lập trình và nhiều hơn nữa. Bạn cũng có thể đặt câu hỏi cụ thể về dự án của bạn cho Amazon Q trong VS Code. Để biết thông tin chi tiết về Amazon Q Chat, bao gồm các chủ đề và câu hỏi mẫu, xem chủ đề Amazon Q Chat trong Hướng dẫn người dùng Amazon Q.</p>
+<p>Dưới đây là các lệnh Chat nhanh của Amazon Q mà bạn có thể nhập trong cửa sổ chat.</p>
+<ul>
+<li><code>/clear</code>: Xóa chat hiện tại bằng cách loại bỏ tất cả văn bản và ngữ cảnh đã lưu trước đó.</li>
+<li><code>/dev</code>: Bắt đầu một cuộc trò chuyện về phát triển các tính năng Amazon Q và tạo một kế hoạch triển khai cho dự án của bạn.</li>
+<li><code>/transform</code>: Bắt đầu một cuộc trò chuyện về Chuyển đổi Mã Amazon Q, hỗ trợ bạn chuyển đổi mã từ một phiên bản ngôn ngữ sang một phiên bản khác.</li>
+<li><code>/help</code>: Hiển thị một danh sách các chủ đề trợ giúp và thông tin về Amazon Q.</li>
+</ul>
+<p>Để bắt đầu một cuộc trò chuyện mới với Amazon Q hoặc truy cập một cuộc trò chuyện hiện có, làm theo một trong các thủ tục dưới đây.</p>
+<h4 id="mở-amazon-q-chat-từ-thanh-công-cụ-vs-code">Mở Amazon Q Chat từ thanh công cụ VS Code</h4>
+<p>Từ thanh công cụ VS Code, chọn biểu tượng Amazon Q (phiên bản xem trước) để mở cửa sổ Chat Amazon Q (phiên bản xem trước). Bắt đầu một cuộc trò chuyện mới bằng cách chọn biểu tượng +. Nhập câu hỏi hoặc lệnh của bạn vào trường văn bản &ldquo;Đặt câu hỏi hoặc nhập &lsquo;/&rsquo;&rdquo; để tiếp tục cuộc trò chuyện.</p>
+<h4 id="aws-toolkit---amazon-q-codewhisperer-và-nhiều-hơn-nữa">AWS Toolkit - Amazon Q, CodeWhisperer và nhiều hơn nữa</h4>
+<h4 id="phát-triển-tính-năng-với-amazon-q">Phát triển tính năng với Amazon Q</h4>
+<p>Phát triển dự án của bạn bằng cách trò chuyện với Amazon Q về loại tính năng bạn muốn tạo. Giải thích các tính năng mong muốn trong cuộc trò chuyện và Amazon Q sẽ tạo ra một kế hoạch triển khai cho dự án mới hoặc hiện tại của bạn. Để biết thông tin chi tiết về việc phát triển tính năng với Amazon Q, xem chủ đề Phát triển tính năng với Amazon Q trong Hướng dẫn người dùng Amazon Q.</p>
+<blockquote>
+<p>Lưu ý: Phát triển tính năng Amazon Q chỉ có thể truy cập được với xác thực nhận dạng IAM. Xem kế hoạch và giá cả chi tiết của Amazon Q tại Hướng dẫn giá của Amazon Q.</p>
+</blockquote>
+<p>Amazon Q không sửa đổi hoặc cập nhật mã cho đến khi bạn đã xem xét và phê duyệt thay đổi trong tệp diff. Để bắt đầu phát triển tính năng với Amazon Q, hoàn thành các bước sau:</p>
+<ul>
+<li>Từ dự án VS Code mới hoặc hiện có, mở Amazon Q Chat.</li>
+<li>Trong cửa sổ Amazon Q Chat, nhập <code>/dev</code>, sau đó nhấn enter để bắt đầu phát triển tính năng Amazon Q; trường văn bản Chat Amazon Q được cập nhật với lời nhắc &ldquo;Mô tả ngắn gọn một nhiệm vụ hoặc vấn đề&rdquo;.</li>
+<li>Phản hồi với lời nhắc trong cửa sổ Chat Amazon Q, mô tả ngắn gọn tính năng bạn muốn phát triển, sau đó nhấn enter để bắt đầu tạo kế hoạch triển khai.</li>
+<li>Amazon Q phản hồi với một kế hoạch triển khai khi hoàn tất, và trường văn bản được cập nhật với lời nhắc.</li>
+<li>Nhập bất kỳ sửa đổi hoặc câu hỏi nào về kế hoạch triển khai vào trường văn bản.</li>
+<li>Khi hài lòng với kế hoạch, chọn Viết Mã từ cửa sổ chat để Amazon Q đề xuất mã cho dự án của bạn.</li>
+</ul>
+<h4 id="tích-hợp-và-khả-năng-trò-chuyện-trong-môi-trường-phát-triển-tích-hợp-ides">Tích hợp và khả năng trò chuyện trong môi trường phát triển tích hợp (IDEs)</h4>
+<p>Như chúng tôi đã đề cập, Amazon Q cũng có sẵn trong các IDE được hỗ trợ. Điều này cho phép bạn đặt câu hỏi và nhận sự trợ giúp trong IDE của bạn bằng cách trò chuyện với Amazon Q hoặc kích hoạt các hành động bằng cách nhập / vào hộp trò chuyện.</p>
+<h4 id="phát-triển-tính-năng-năng-lực">Phát triển tính năng năng lực</h4>
+<p>Một tính năng hấp dẫn khác mà Amazon Q cung cấp là hướng dẫn bạn tương tác từ ý tưởng đến việc xây dựng các tính năng mới trong IDE của bạn và Amazon CodeCatalyst. Bạn có thể chuyển từ một lời nhắc bằng ngôn ngữ tự nhiên thành các tính năng ứng dụng trong vài phút, với hướng dẫn tương tác từng bước và các quy ước tốt nhất, ngay từ IDE của bạn. Với một lời nhắc, Amazon Q sẽ cố gắng hiểu cấu trúc ứng dụng của bạn và phân tích cú pháp lời nhắc của bạn thành các bước triển khai logic và nguyên tử.</p>
+<p>Để sử dụng tính năng này, bạn có thể bắt đầu bằng cách gọi một lệnh hành động /dev trong Amazon Q và mô tả nhiệm vụ mà bạn cần Amazon Q xử lý.</p>
+<p>Sau đó, từ đây, bạn có thể xem xét, hợp tác và hướng dẫn Amazon Q trong cuộc trò chuyện về các khu vực cụ thể cần triển khai.</p>
+<p><img src="/images/00025.png?featherlight=false&amp;width=90pc" alt="Amazon Q"></p>
+<p>Các khả năng bổ sung để giúp bạn phát hành các tính năng nhanh hơn với các yêu cầu pull requests đầy đủ có sẵn nếu bạn đang sử dụng Amazon CodeCatalyst. Trong Amazon CodeCatalyst, bạn có thể chỉ định một vấn đề mới hoặc đã tồn tại cho Amazon Q, và nó sẽ xử lý một quy trình phát triển end-to-end cho bạn. Amazon Q sẽ xem xét mã hiện tại, đề xuất một phương pháp giải quyết, tìm kiếm phản hồi từ bạn về phương pháp, tạo mã sẵn sàng cho việc hợp nhất, và đăng một yêu cầu pull request để xem xét. Tất cả những gì bạn cần làm sau đó là xem xét các giải pháp được đề xuất từ Amazon Q.</p>
+<p>Các bức ảnh sau đây hiển thị một yêu cầu pull được tạo bởi Amazon Q trong Amazon CodeCatalyst.</p>
+<p><img src="/images/00026.png?featherlight=false&amp;width=90pc" alt="Amazon Q"></p>
+<h4 id="nâng-cấp-ứng-dụng-với-amazon-q-code-transformation">Nâng cấp ứng dụng với Amazon Q Code Transformation</h4>
+<p>Với Amazon Q, bạn có thể nâng cấp một ứng dụng toàn bộ chỉ trong vài giờ bằng cách bắt đầu một quy trình biến đổi mã hướng dẫn. Khả năng này, được gọi là Amazon Q Code Transformation, giúp đơn giản hóa việc duy trì, di chuyển và nâng cấp ứng dụng hiện có của bạn.</p>
+<p>Để bắt đầu, hãy điều hướng đến phần CodeWhisperer và sau đó chọn Transform. Amazon Q Code Transformation tự động phân tích cơ sở mã hiện tại của bạn, tạo ra một kế hoạch biến đổi và hoàn thành các nhiệm vụ biến đổi chính được đề xuất bởi kế hoạch.</p>
+<p><img src="/images/00027.png?featherlight=false&amp;width=90pc" alt="Amazon Q"></p>
+<p><strong>Thêm thông tin về tính năng này:</strong></p>
+<ul>
+<li>Amazon Q Code Transformation hiện đã có sẵn trong bản xem trước ngày hôm nay trong AWS Toolkit cho IntelliJ IDEA và AWS Toolkit cho Visual Studio Code.</li>
+<li>Để sử dụng khả năng này, bạn cần phải có Amazon CodeWhisperer Professional tier trong quá trình xem trước.</li>
+<li>Trong quá trình xem trước, bạn có thể nâng cấp các ứng dụng Java 8 và 11 lên phiên bản 17, một phiên bản phát hành hỗ trợ dài hạn (LTS) của Java.</li>
+</ul>
+<h4 id="tăng-tốc-phát-triển-phần-mềm-với-amazon-q">Tăng Tốc Phát Triển Phần Mềm với Amazon Q</h4>
+<p>Amazon Q mang lại một loạt các tính năng và công cụ giúp tăng tốc quá trình phát triển phần mềm, từ gợi ý mã nguồn đến quét bảo mật và biến đổi mã nguồn.</p>
+<h4 id="gợi-ý-mã-nguồn-trực-tiếp">Gợi Ý Mã Nguồn Trực Tiếp</h4>
+<p>Gợi ý mã nguồn trực tiếp giúp bạn viết mã nhanh hơn bằng cách hiển thị gợi ý khi bạn đang gõ.</p>
+<p><strong>Ví dụ về gợi ý mã nguồn trực tiếp:</strong></p>
+<p><img src="/images/0001.gif?featherlight=false&amp;width=90pc" alt="Amazon Q"></p>
+<p>Hỗ trợ hơn 15 ngôn ngữ bao gồm Python, TypeScript, Rust, Terraform, AWS CloudFormation, và nhiều hơn nữa.</p>
+<h4 id="trò-chuyện">Trò Chuyện</h4>
+<p>Tạo mã nguồn, giải thích mã nguồn và nhận câu trả lời cho các câu hỏi về phát triển phần mềm.</p>
+<p><strong>Ví dụ về trò chuyện với Amazon Q:</strong></p>
+<p><img src="/images/0002.gif?featherlight=false&amp;width=90pc" alt="Amazon Q"></p>
+<h4 id="quét-bảo-mật">Quét Bảo Mật</h4>
+<p>Phân tích và sửa các lỗ hổng bảo mật trong dự án của bạn.</p>
+<p><strong>Ví dụ về sửa lỗi lỗ hổng bảo mật:</strong></p>
+<p><img src="/images/0003.gif?featherlight=false&amp;width=90pc" alt="Amazon Q"></p>
+<p>Hỗ trợ 10 ngôn ngữ bao gồm Python, TypeScript, C#, và nhiều hơn nữa.</p>
+<h4 id="agent-cho-phát-triển-phần-mềm">Agent Cho Phát Triển Phần Mềm</h4>
+<p>Amazon Q có thể lập kế hoạch và triển khai chức năng mới trên nhiều tệp trong không gian làm việc của bạn.</p>
+<p>Để mở menu hành động nhanh và chọn hành động &ldquo;/dev&rdquo;, hãy gõ &ldquo;/&rdquo; trong trò chuyện.</p>
+<p><img src="/images/0004.gif?featherlight=false&amp;width=90pc" alt="Amazon Q"></p>
+<p>Lưu ý: Bản demo này đã được rút gọn, việc tạo kế hoạch và mã có thể mất vài phút.</p>
+<h4 id="agent-cho-biến-đổi-mã-nguồn">Agent Cho Biến Đổi Mã Nguồn</h4>
+<p>Nâng cấp ứng dụng Java của bạn trong vài phút, không phải hàng tuần.</p>
+<p>Để mở menu hành động nhanh và chọn hành động &ldquo;/transform&rdquo;, hãy gõ &ldquo;/&rdquo; trong trò chuyện.</p>
+<p><img src="/images/0005.gif?featherlight=false&amp;width=90pc" alt="Amazon Q"></p>
+<p>Hiện hỗ trợ nâng cấp dự án Maven Java 8 hoặc 11 lên Java 17.</p>
+<h4 id="bắt-đầu">Bắt Đầu</h4>
+<ul>
+<li><strong>Tính Năng Miễn Phí</strong>: Tạo hoặc đăng nhập với ID Builder AWS (không cần tài khoản AWS!).</li>
+<li><strong>Tính Năng Pro</strong>: Nếu tổ chức của bạn ở trong tầng phát triển Amazon Q Pro, đăng nhập với đăng nhập duy nhất.</li>
+</ul>
+<p>Amazon Q không chỉ là một công cụ phát triển phần mềm, mà còn là một đối tác đáng tin cậy trong quá trình phát triển ứng dụng của bạn.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/vi/6-working-with-aws-services/6.1-aws-explorer/" title="AWS Explorer"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/vi/6-working-with-aws-services/6.3-amazon-codewhisperer/" title="Amazon CodeWhisperer" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1715218604"></script>
+    <script src="/js/perfect-scrollbar.min.js?1715218604"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1715218604"></script>
+    <script src="/js/jquery.sticky.js?1715218604"></script>
+    <script src="/js/featherlight.min.js?1715218604"></script>
+    <script src="/js/highlight.pack.js?1715218604"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1715218604"></script>
+    <script src="/js/learn.js?1715218604"></script>
+    <script src="/js/hugo-learn.js?1715218604"></script>
+
+    <link href="/mermaid/mermaid.css?1715218604" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1715218604"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-158079754-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>
